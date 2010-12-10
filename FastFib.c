@@ -4,6 +4,8 @@
 
 void print_help(char* name);
 void print_usage(char* name);
+void GMPFib(mpz_t n, int l);
+void HugeFib(mpz_t n, int l);
 void FastFib(mpz_t n, int l);
 void sqFib(mpz_t c, mpz_t b, mpz_t a);
 void nextFib(mpz_t c, mpz_t b, mpz_t a);
@@ -12,7 +14,7 @@ void nextFib(mpz_t c, mpz_t b, mpz_t a);
 int MAX_I = 0x7FFFFFFF; // 2,147,483,647
 
 int main(int argc, char *argv[]) {
-
+    void (*FibFunc)(mpz_t, int) = FastFib;
     int quiet = 0;
     unsigned int i = -1;
     int k = 0;
@@ -43,9 +45,8 @@ int main(int argc, char *argv[]) {
     mpz_init(n);
 
     printf("Calculating Fib(%d)...\n", i);
-    FastFib(n,i);
+    FibFunc(n,i);
 
-    //mpz_fib_ui(n, i);
     if (!quiet) {
         // Print n to stdout
         printf("Fib(%d) is...\n", i);
@@ -73,6 +74,45 @@ void print_help(char* name) {
 
 void print_usage(char* name) {
     printf("Usage: %s [-h] [-q] i\n", name);
+}
+
+void GMPFib(mpz_t n, int l) {
+    mpz_fib_ui(n, l);
+}
+
+void HugeFib(mpz_t n, int l) {
+    mpz_t a;
+    mpz_t b;
+    mpz_t c;
+    int i;
+    int size = (i * 695 ) /1000;
+
+    if ( l <= 0 ) {
+        mpz_set_ui(n,0);
+        return;
+    } else if ( l == 1 ) {
+        mpz_set_ui(n,1);
+        return;
+    }
+
+    mpz_init(a);
+    mpz_init(b);
+    mpz_init(c);
+
+    mpz_set_ui(a,0);
+    mpz_set_ui(b,1);
+
+    for ( i = 1; i < l; i++) {
+        mpz_add(c,a,b);
+        mpz_set(a,b);
+        mpz_set(b,c);
+    }
+
+    mpz_set(n,c);
+
+    mpz_clear(a);
+    mpz_clear(b);
+    mpz_clear(c);
 }
 
 void FastFib(mpz_t n, int l) {

@@ -1,0 +1,5 @@
+These are tasks that might make this small program better.
+
+  * Allow for user selection of calculation method.
+  * Allow out to file.
+  * Find a calculation method faster than the GMP's builtin.
