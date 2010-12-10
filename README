@@ -1,1 +1,11 @@
-Initial commit, no readme yet. Sorry.
+This is a small C program to calculate arbitrary Fibonacci numbers.
+
+To compile the GNU multiple precision arithmetic library is required.
+> gcc -std=c99 -lgmp FastFib.c
+
+Usage: ./a.out [-h] [-q] i
+This program calculates arbitrary Fibonacci numbers.
+   -h	Prints this message.
+   -q	Prevents the conversion from binary to decimal of Fib(i).
+    i	i must be an integer, 0 <= i <= 2147483647
+
